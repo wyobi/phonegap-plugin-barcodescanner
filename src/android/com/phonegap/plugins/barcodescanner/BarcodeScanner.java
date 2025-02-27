@@ -24,6 +24,7 @@ import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
 import org.apache.cordova.PermissionHelper;
 
+import com.google.zxing.DecodeHintType;
 import com.google.zxing.client.android.CaptureActivity;
 import com.google.zxing.client.android.encode.EncodeActivity;
 import com.google.zxing.client.android.Intents;
@@ -44,6 +45,8 @@ public class BarcodeScanner extends CordovaPlugin {
     private static final String DATA = "data";
     private static final String TYPE = "type";
     private static final String CAMERAID = "cameraId";
+    private static final String WIDTH = "width";
+    private static final String HEIGHT = "height";
     private static final String PREFER_FRONTCAMERA = "preferFrontCamera";
     private static final String ORIENTATION = "orientation";
     private static final String SHOW_FLIP_CAMERA_BUTTON = "showFlipCameraButton";
@@ -186,10 +189,29 @@ public class BarcodeScanner extends CordovaPlugin {
                             }
                         }
                         intentScan.putExtra(Intents.Scan.CAMERA_ID, cameraId);
+                        if(obj.has(WIDTH)) {
+                            try {
+                                intentScan.putExtra(Intents.Scan.WIDTH, obj.getInt(WIDTH));
+                            }
+                            catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        if(obj.has(HEIGHT)) {
+                            try {
+                                intentScan.putExtra(Intents.Scan.HEIGHT, obj.getInt(HEIGHT));
+                            }
+                            catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
                         intentScan.putExtra(Intents.Scan.SHOW_FLIP_CAMERA_BUTTON, obj.optBoolean(SHOW_FLIP_CAMERA_BUTTON, false));
                         intentScan.putExtra(Intents.Scan.SHOW_TORCH_BUTTON, obj.optBoolean(SHOW_TORCH_BUTTON, false));
                         intentScan.putExtra(Intents.Scan.TORCH_ON, obj.optBoolean(TORCH_ON, false));
                         intentScan.putExtra(Intents.Scan.SAVE_HISTORY, obj.optBoolean(SAVE_HISTORY, false));
+                        if(obj.has("tryHarder")) {
+                            intentScan.putExtra("TRY_HARDER", true);
+                        }
                         boolean beep = obj.optBoolean(DISABLE_BEEP, false);
                         intentScan.putExtra(Intents.Scan.BEEP_ON_SCAN, !beep);
                         if (obj.has(RESULTDISPLAY_DURATION)) {
@@ -334,5 +356,4 @@ public class BarcodeScanner extends CordovaPlugin {
     public void onRestoreStateForActivityResult(Bundle state, CallbackContext callbackContext) {
         this.callbackContext = callbackContext;
     }
-
 }
