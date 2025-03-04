@@ -47,6 +47,7 @@ public class BarcodeScanner extends CordovaPlugin {
     private static final String CAMERAID = "cameraId";
     private static final String WIDTH = "width";
     private static final String HEIGHT = "height";
+    private static final String TOP = "top";
     private static final String PREFER_FRONTCAMERA = "preferFrontCamera";
     private static final String ORIENTATION = "orientation";
     private static final String SHOW_FLIP_CAMERA_BUTTON = "showFlipCameraButton";
@@ -200,6 +201,14 @@ public class BarcodeScanner extends CordovaPlugin {
                         if(obj.has(HEIGHT)) {
                             try {
                                 intentScan.putExtra(Intents.Scan.HEIGHT, obj.getInt(HEIGHT));
+                            }
+                            catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        if(obj.has(TOP)) {
+                            try {
+                                intentScan.putExtra(Intents.Scan.TOP, obj.getInt(TOP));
                             }
                             catch (JSONException e) {
                                 e.printStackTrace();
