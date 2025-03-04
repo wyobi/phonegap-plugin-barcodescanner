@@ -254,7 +254,7 @@ public class BarcodeScanner extends CordovaPlugin {
                 try {
                     obj.put(TEXT, intent.getStringExtra("SCAN_RESULT"));
                     obj.put(FORMAT, intent.getStringExtra("SCAN_RESULT_FORMAT"));
-                    obj.put(DATA, intent.getStringExtra("SCAN_RESULT_BYTES"));
+                    obj.put(DATA, bytesToHex(intent.getByteArrayExtra("SCAN_RESULT_BYTES")));
                     obj.put(CANCELLED, false);
                 } catch (JSONException e) {
                     Log.d(LOG_TAG, "This should never happen");
@@ -278,6 +278,18 @@ public class BarcodeScanner extends CordovaPlugin {
                 this.callbackContext.error("Unexpected error");
             }
         }
+    }
+
+    private static String bytesToHex(byte[] bytes) {
+        if(bytes == null) {
+            return "";
+        }
+
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : bytes) {
+            hexString.append(String.format("%02X", b));
+        }
+        return hexString.toString();
     }
 
     /**
