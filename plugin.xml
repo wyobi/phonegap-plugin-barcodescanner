@@ -33,13 +33,14 @@
       </feature>
     </config-file>
     <config-file target="AndroidManifest.xml" parent="/manifest/application">
-      <activity android:name="com.google.zxing.client.android.CaptureActivity" android:clearTaskOnLaunch="true" android:configChanges="orientation|keyboardHidden|screenSize" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:windowSoftInputMode="stateAlwaysHidden" android:exported="false"/>
-      <activity android:name="com.google.zxing.client.android.encode.EncodeActivity" android:label="Share"/>
+      <activity android:name="com.google.zxing.client.android.CaptureActivity" android:clearTaskOnLaunch="true" android:configChanges="orientation|keyboardHidden|screenSize" android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:windowSoftInputMode="stateAlwaysHidden" android:exported="true" android:screenOrientation="sensorPortrait"/>
+      <activity android:name="com.google.zxing.client.android.encode.EncodeActivity" android:label="Share" android:exported="false"/>
     </config-file>
     <config-file target="AndroidManifest.xml" parent="/manifest">
       <uses-permission android:name="android.permission.CAMERA"/>
-      <uses-permission android:name="android.permission.FLASHLIGHT"/>
-      <uses-feature android:name="android.hardware.camera" android:required="true"/>
+      <uses-feature android:name="android.hardware.camera" android:required="false"/>
+      <uses-feature android:name="android.hardware.camera.autofocus" android:required="false"/>
+      <uses-feature android:name="android.hardware.camera.flash" android:required="false"/>
     </config-file>
     <framework src="src/android/barcodescanner.gradle" custom="true" type="gradleReference"/>
     <framework src="com.android.support:support-v4:$ANDROID_SUPPORT_V4_VERSION"/>
