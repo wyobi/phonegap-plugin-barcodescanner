@@ -1,0 +1,29 @@
+repositories{
+    google()
+    mavenCentral()
+    flatDir{
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    implementation (name:'barcodescanner-release-1.0.105', ext:'aar')
+}
+
+android {
+    defaultConfig {
+        minSdkVersion 24
+        targetSdkVersion 35
+        compileSdkVersion 35
+    }
+
+    packagingOptions {
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
