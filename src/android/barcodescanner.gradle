@@ -7,7 +7,7 @@ repositories{
 }
 
 dependencies {
-    implementation (name:'barcodescanner-release-1.0.117', ext:'aar')
+    implementation (name:'barcodescanner-release-1.0.118', ext:'aar')
 }
 
 android {
