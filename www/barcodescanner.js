@@ -69,9 +69,26 @@
          *        text : '12345-mock',    // The code that was scanned.
          *        format : 'FORMAT_NAME', // Code format.
          *        cancelled : true/false, // Was canceled.
+         *
+         *        // Present only when config.multiScan was true:
+         *        multi : true,
+         *        results : [             // every code collected, first-seen order
+         *            { text: '...', format: 'QR_CODE', bytesBase64: '...' },
+         *            ...
+         *        ]
          *    }
  * @param {Function} errorCallback
- * @param config
+ * @param config Options (Android):
+ *        multiScan : false,      // true = collect EVERY code seen instead of
+ *                                // returning on the first. The scanner stays
+ *                                // open; text/format still carry the first code
+ *                                // so existing consumers work unchanged.
+ *        collectSeconds : 3,     // multiScan collect window in seconds, started
+ *                                // by the FIRST code found (1..60). While it
+ *                                // runs the scanner shows "Collected N codes".
+ *                                // 1D codes must be seen in 2 frames before
+ *                                // they count (misread guard); 2D codes count
+ *                                // immediately. Duplicates are dropped.
  */
 BarcodeScanner.prototype.scan = function (successCallback, errorCallback, config) {
 

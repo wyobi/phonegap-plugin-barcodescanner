@@ -241,6 +241,17 @@ public class BarcodeScanner extends CordovaPlugin {
                         if(obj.has("tryHarder")) {
                             intentScan.putExtra("TRY_HARDER", true);
                         }
+                        // Multi-scan: collect EVERY code seen instead of returning on
+                        // the first. The collect window (collectSeconds, default 3)
+                        // starts when the FIRST code is found; when it expires all
+                        // codes come back at once in result.results.
+                        if (obj.optBoolean("multiScan", false)) {
+                            intentScan.putExtra(Intents.Scan.MULTI_SCAN, true);
+                            intentScan.putExtra(Intents.Scan.COLLECT_SECONDS,
+                                    obj.optInt("collectSeconds", 3));
+                            Log.i(LOG_TAG, "Multi-scan enabled, collect window "
+                                    + obj.optInt("collectSeconds", 3) + "s");
+                        }
                         boolean beep = obj.optBoolean(DISABLE_BEEP, false);
                         intentScan.putExtra(Intents.Scan.BEEP_ON_SCAN, !beep);
                         if (obj.has(RESULTDISPLAY_DURATION)) {
@@ -290,6 +301,14 @@ public class BarcodeScanner extends CordovaPlugin {
                     obj.put(FORMAT, intent.getStringExtra("SCAN_RESULT_FORMAT"));
                     obj.put(DATA, bytesToHex(intent.getByteArrayExtra("SCAN_RESULT_BYTES")));
                     obj.put(CANCELLED, false);
+                    // Multi-scan: results = [{text, format, bytesBase64?}, ...] in
+                    // first-seen order. text/format above still carry the first code
+                    // so single-scan consumers keep working unchanged.
+                    String multiJson = intent.getStringExtra("SCAN_RESULT_MULTI");
+                    if (multiJson != null) {
+                        obj.put("multi", true);
+                        obj.put("results", new JSONArray(multiJson));
+                    }
                 } catch (JSONException e) {
                     Log.d(LOG_TAG, "This should never happen");
                 }
