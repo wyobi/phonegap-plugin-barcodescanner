@@ -249,8 +249,13 @@ public class BarcodeScanner extends CordovaPlugin {
                             intentScan.putExtra(Intents.Scan.MULTI_SCAN, true);
                             intentScan.putExtra(Intents.Scan.COLLECT_SECONDS,
                                     obj.optInt("collectSeconds", 3));
+                            // maxCodes: stop as soon as N unique codes are collected
+                            // instead of waiting out the window. 0 = window decides.
+                            intentScan.putExtra(Intents.Scan.MAX_CODES,
+                                    obj.optInt("maxCodes", 0));
                             Log.i(LOG_TAG, "Multi-scan enabled, collect window "
-                                    + obj.optInt("collectSeconds", 3) + "s");
+                                    + obj.optInt("collectSeconds", 3) + "s, maxCodes "
+                                    + obj.optInt("maxCodes", 0));
                         }
                         boolean beep = obj.optBoolean(DISABLE_BEEP, false);
                         intentScan.putExtra(Intents.Scan.BEEP_ON_SCAN, !beep);

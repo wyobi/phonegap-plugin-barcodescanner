@@ -89,6 +89,12 @@
  *                                // 1D codes must be seen in 2 frames before
  *                                // they count (misread guard); 2D codes count
  *                                // immediately. Duplicates are dropped.
+ *        maxCodes : 0,           // multiScan: stop as soon as this many unique
+ *                                // codes are collected, without waiting out the
+ *                                // window (cortexdecoder numberOfBarcodesToDecode
+ *                                // equivalent). 0 = the window alone decides.
+ *                                // Whichever of maxCodes / collectSeconds is hit
+ *                                // first ends the scan. Hard cap 50.
  */
 BarcodeScanner.prototype.scan = function (successCallback, errorCallback, config) {
 
